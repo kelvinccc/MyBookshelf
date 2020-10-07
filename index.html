@@ -105,99 +105,21 @@
 
     <hr class="mb-4"></hr>
 
-    <div id="books-container" class="container mx-auto text-center">
-      <div class="row">
-        <div class="book col-sm-4 mx-3 my-3 p-0 border border-dark">
-          <h2 class="mt-5">Title</h2>
-          <p class="mb-4 text-muted">Author</p>
+    <div id="books-container" class="container text-center">
+      <div class="row justify-content-center">
+        <div class="book col-md-4 mx-3 my-3 p-0 border border-dark">
+          <h2 class="pt-5">Title</h2>
+          <p class="pb-4 mb-0 text-muted">Author</p>
+          <div id="book-buttons">
           <button type="button" class="btn btn-outline-primary btn-sm">
             Edit
           </button>
           <button type="button" class="btn btn-danger btn-sm">
             Delete
           </button>
-          <h4 class="mt-4 mb-2">5 / 246 pages</h4>
-          <div class="progress rounded-0">
-            <div
-              class="progress-bar bg-warning w-75"
-              role="progressbar"
-              aria-valuenow="25"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
           </div>
-        </div>
-        <div class="book col-sm-4 mx-3 my-3 p-0 border border-dark">
-          <h2 class="mt-5">Title</h2>
-          <p class="mb-4 text-muted">Author</p>
-          <button type="button" class="btn btn-outline-primary btn-sm">
-            Edit
-          </button>
-          <button type="button" class="btn btn-danger btn-sm">
-            Delete
-          </button>
-          <h4 class="mt-4 mb-2">5 / 246 pages</h4>
-          <div class="progress rounded-0">
-            <div
-              class="progress-bar bg-warning w-75"
-              role="progressbar"
-              aria-valuenow="25"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-        </div>
-        <div class="book col-sm-4 mx-3 my-3 p-0 border border-dark">
-          <h2 class="mt-5">Title</h2>
-          <p class="mb-4 text-muted">Author</p>
-          <button type="button" class="btn btn-outline-primary btn-sm">
-            Edit
-          </button>
-          <button type="button" class="btn btn-danger btn-sm">
-            Delete
-          </button>
-          <h4 class="mt-4 mb-2">5 / 246 pages</h4>
-          <div class="progress rounded-0">
-            <div
-              class="progress-bar bg-warning w-75"
-              role="progressbar"
-              aria-valuenow="25"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-        </div>
-        <div class="book col-sm-4 mx-3 my-3 p-0 border border-dark">
-          <h2 class="mt-5">Title</h2>
-          <p class="mb-4 text-muted">Author</p>
-          <button type="button" class="btn btn-outline-primary btn-sm">
-            Edit
-          </button>
-          <button type="button" class="btn btn-danger btn-sm">
-            Delete
-          </button>
-          <h4 class="mt-4 mb-2">5 / 246 pages</h4>
-          <div class="progress rounded-0">
-            <div
-              class="progress-bar bg-warning w-75"
-              role="progressbar"
-              aria-valuenow="25"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-        </div>
-        <div class="book col-sm-4 mx-3 my-3 p-0 border border-dark">
-          <h2 class="mt-5">Title</h2>
-          <p class="mb-4 text-muted">Author</p>
-          <button type="button" class="btn btn-outline-primary btn-sm">
-            Edit
-          </button>
-          <button type="button" class="btn btn-danger btn-sm">
-            Delete
-          </button>
-          <h4 class="mt-4 mb-2">5 / 246 pages</h4>
-          <div class="progress rounded-0">
+          <h4 id="pages" class="mb-2">5 / 246 pages</h4>
+          <div id="progress-bar" class="progress rounded-0">
             <div
               class="progress-bar bg-warning w-75"
               role="progressbar"
