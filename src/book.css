@@ -2,7 +2,17 @@ body {
   font-family: sans-serif;
 }
 
-#book {
-  width: 180px;
-  height: 240px;
+.book {
+  max-width: 215px;
+  max-height: 275px;
+  box-shadow: 5px 8px 6px 0px rgba(0, 0, 0, 0.25);
+  background: #f8f8f8;
+}
+
+h4 {
+  font-size: 12px;
+}
+
+.progress {
+  height: 8px;
 }
