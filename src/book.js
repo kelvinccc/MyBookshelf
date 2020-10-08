@@ -33,44 +33,116 @@ Book.prototype.info = function () {
   );
 };
 
-function addBook() {
-  let name = window.prompt("Name of book: ");
-  let author = window.prompt("Author: ");
-  let pages = window.prompt("Pages");
-  let pagesRead = window.prompt("Pages read: ");
+/*
+  Adds a book to the bookshelf
+*/
 
-  myLibrary.push(new Book(name, author, pages, pagesRead));
+const addBookButton = document.getElementById("add-book-form");
+addBookButton.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let title = document.getElementById("title-input-field").value;
+  let author = document.getElementById("author-input-field").value;
+  let pages = document.getElementById("pagestotal-input-field").value;
+  let pagesRead = document.getElementById("pagesread-input-field").value;
+
+  console.log("add-book-button clicked");
+  if (
+    title.length === 0 ||
+    author.length === 0 ||
+    pages.length === 0 ||
+    pagesRead.length === 0
+  ) {
+    console.log("fill out all fields!");
+    document.getElementById("message-region").innerHTML =
+      "Fill out all fields!";
+  } else if (pages < pagesRead) {
+    document.getElementById("message-region").innerHTML =
+      "Pages read must be less than total pages!";
+    document.getElementById("pagestotal-input-field").value = "";
+    document.getElementById("pagesread-input-field").value = "";
+  } else {
+    addBook(title, author, pages, pagesRead);
+    clearModal();
+    $("#addbook-modal").modal("hide");
+  }
+});
+
+function clearModal() {
+  document.getElementById("title-input-field").value = "";
+  document.getElementById("author-input-field").value = "";
+  document.getElementById("pagestotal-input-field").value = "";
+  document.getElementById("pagesread-input-field").value = "";
+  document.getElementById("message-region").innerHTML = "";
 }
 
-myLibrary.push(
-  new Book("7 Habits of highly effective people", "Dale Carnegie", 275, 0)
-);
-myLibrary.push(
-  new Book("How to win friends and influence people", "Dale Carnegie", 300, 0)
-);
-myLibrary.push(new Book("Hunger Games", "Katniss Everdeen", 199, 0));
+function addBook(title, author, pages, pagesRead) {
+  console.log("adding " + title + " to bookshelf...");
+  myLibrary.push(new Book(title, author, pages, pagesRead));
+  renderBooks();
+}
 
-function renderBook(book) {
+function addRemoveHandler(i) {
+  const removeBookButton = document.getElementById("remove-" + i);
+   removeBookButton.addEventListener("click", (e) => {
+    console.log("clicked " + myLibrary[i].title);
+    myLibrary.splice(i, 1);
+    document.getElementById("book-" + i).remove();
+  });
+}
+
+/*
+  Renders a particular book onto DOM
+  Input:
+    Book book: Book object
+*/
+function renderBook(book, i) {
   const { title, author, pages, pagesRead } = book;
-  console.log(book);
-  document.getElementById("bookshelf").innerHTML +=
-    '<div class="book">' +
-    "Name: " +
+
+  let progress = Math.floor((pagesRead / pages) * 100);
+  console.log(progress);
+
+  document.getElementById("books").innerHTML +=
+    "<div id='book-" +
+    i +
+    "'class='book col-md-4 mx-3 my-3 p-0 border border-dark'>" +
+    '<h2 class="px-3 pt-5">' +
     title +
-    "Author: " +
+    "</h2>" +
+    '<p class="author mb-0 text-muted">' +
     author +
-    "Pages: " +
-    pages +
-    "Pages read: " +
+    "</p>" +
+    '<div id="book-buttons">' +
+    '<button type="button" class="btn btn-outline-primary btn-sm mr-2">Edit</button>' +
+    '<button id=remove-"' +
+    i +
+    '" type="button" class="btn btn-danger btn-sm">Delete</button>' +
+    "</div>" +
+    '<h4 id="pages" class="mb-2">' +
     pagesRead +
+    "/" +
+    pages +
+    " pages</h4>" +
+    '<div id="progress-bar" class="progress rounded-0">' +
+    "<div " +
+    'class="progress-bar bg-warning w-"' +
+    'style="width: ' +
+    progress +
+    '%"' +
+    'role="progressbar"' +
+    'aria-valuenow="25"' +
+    'aria-valuemin="0"' +
+    'aria-valuemax="100"' +
+    "></div>" +
+    "</div>" +
     "</div>";
 }
 
 function renderBooks() {
   console.log("rendering books");
+  document.getElementById("books").innerHTML = "";
   for (let i = 0; i < myLibrary.length; i++) {
-    console.log(myLibrary[i]);
-    renderBook(myLibrary[i]);
+    renderBook(myLibrary[i], i);
+    addRemoveHandler(i);
   }
 }
 
