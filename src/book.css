@@ -19,6 +19,11 @@ h2 {
   font-size: 18px;
 }
 
+hr {
+  height: 1px;
+  background-color: gray;
+}
+
 .progress {
   height: 8px;
 }
@@ -27,7 +32,7 @@ h2 {
   padding-top: 40px;
 }
 
-#pages {
+.pages {
   padding-top: 30px;
 }
 
@@ -36,5 +41,7 @@ h2 {
   font-size: 12px;
 }
 
-.page-scroller {
+#main-header,
+.rufina {
+  font-family: "Rufina";
 }

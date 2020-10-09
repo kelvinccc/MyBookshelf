@@ -170,7 +170,7 @@ function renderBook(book, i) {
     i +
     '" type="button" class="btn btn-danger btn-sm">Delete</button>' +
     "</div>" +
-    '<h4 class="mb-2">' +
+    '<h4 class="pages mb-2">' +
     pagesRead +
     "/" +
     pages +
