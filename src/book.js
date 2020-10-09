@@ -35,17 +35,25 @@ Book.prototype.info = function () {
 
 /*
   Adds a book to the bookshelf
+  **clears modal and renders book as well....
 */
-
 const addBookButton = document.getElementById("add-book-form");
 addBookButton.addEventListener("submit", (e) => {
   e.preventDefault();
+  submitModal();
+});
+
+/*
+  Checks for modal input errors and returns a new book according to input values of form
+*/
+function submitModal() {
   let title = document.getElementById("title-input-field").value;
   let author = document.getElementById("author-input-field").value;
   let pages = document.getElementById("pagestotal-input-field").value;
   let pagesRead = document.getElementById("pagesread-input-field").value;
-
+  let addOrEdit = document.getElementById("form-val").innerText;
   console.log("add-book-button clicked");
+  console.log(addOrEdit);
   if (
     title.length === 0 ||
     author.length === 0 ||
@@ -60,12 +68,27 @@ addBookButton.addEventListener("submit", (e) => {
       "Pages read must be less than total pages!";
     document.getElementById("pagestotal-input-field").value = "";
     document.getElementById("pagesread-input-field").value = "";
-  } else {
-    addBook(title, author, pages, pagesRead);
+  } else if (addOrEdit === "a") {
+    console.log("adding modal");
+    let book = addBook(title, author, pages, pagesRead);
+    renderBook(book, myLibrary.length - 1);
     clearModal();
-    $("#addbook-modal").modal("hide");
+  } else {
+    console.log("submitting modal");
+    myLibrary[addOrEdit] = new Book(title, author, pages, pagesRead);
+
+    let bookID = "#book-" + addOrEdit;
+    let progress = Math.floor((pagesRead / pages) * 100);
+
+    document.querySelector(bookID + " h2").innerText = title;
+    document.querySelector(bookID + " p").innerText = author;
+    document.querySelector(bookID + " h4").innerText = pagesRead + "/" + pages;
+    document.querySelector(bookID + " .progress-bar.bg-warning").style.width =
+      progress + "%";
+
+    clearModal();
   }
-});
+}
 
 function clearModal() {
   document.getElementById("title-input-field").value = "";
@@ -73,20 +96,46 @@ function clearModal() {
   document.getElementById("pagestotal-input-field").value = "";
   document.getElementById("pagesread-input-field").value = "";
   document.getElementById("message-region").innerHTML = "";
+  document.getElementById("form-val").innerText = "a";
+  $("#addbook-modal").modal("hide");
 }
 
 function addBook(title, author, pages, pagesRead) {
   console.log("adding " + title + " to bookshelf...");
-  myLibrary.push(new Book(title, author, pages, pagesRead));
-  renderBooks();
+  let book = new Book(title, author, pages, pagesRead);
+  myLibrary.push(book);
+  return book;
 }
 
 function addRemoveHandler(i) {
+  console.log("adding r-handler for book-" + i);
   const removeBookButton = document.getElementById("remove-" + i);
-   removeBookButton.addEventListener("click", (e) => {
-    console.log("clicked " + myLibrary[i].title);
+  removeBookButton.addEventListener("click", () => {
+    console.log("deleting book- " + i);
     myLibrary.splice(i, 1);
+    console.log(myLibrary);
     document.getElementById("book-" + i).remove();
+    renderBooks();
+  });
+}
+
+function editBookHandler(i) {
+  console.log("adding e-handler for book-" + i);
+  const editBookButton = document.getElementById("edit-" + i);
+  editBookButton.addEventListener("click", () => {
+    console.log("editing book- " + i);
+    document.getElementById("form-val").innerText = i;
+
+    const { title, author, pages, pagesRead } = myLibrary[i];
+
+    //set modal presets
+    document.getElementById("title-input-field").value = title;
+    document.getElementById("author-input-field").value = author;
+    document.getElementById("pagesread-input-field").value = pagesRead;
+    console.log(pages);
+    document.getElementById("pagestotal-input-field").value = pages;
+
+    $("#addbook-modal").modal();
   });
 }
 
@@ -101,30 +150,34 @@ function renderBook(book, i) {
   let progress = Math.floor((pagesRead / pages) * 100);
   console.log(progress);
 
-  document.getElementById("books").innerHTML +=
+  let bookDom = document.getElementById("books");
+
+  var bookHtml =
     "<div id='book-" +
     i +
     "'class='book col-md-4 mx-3 my-3 p-0 border border-dark'>" +
-    '<h2 class="px-3 pt-5">' +
+    '<h2 id="booktitle" class="px-3 pt-5">' +
     title +
     "</h2>" +
-    '<p class="author mb-0 text-muted">' +
+    '<p id="book-author" class="author mb-0 text-muted">' +
     author +
     "</p>" +
     '<div id="book-buttons">' +
-    '<button type="button" class="btn btn-outline-primary btn-sm mr-2">Edit</button>' +
-    '<button id=remove-"' +
+    '<button id="edit-' +
+    i +
+    '" type="button" class="btn btn-outline-primary btn-sm mr-2">Edit</button>' +
+    '<button id="remove-' +
     i +
     '" type="button" class="btn btn-danger btn-sm">Delete</button>' +
     "</div>" +
-    '<h4 id="pages" class="mb-2">' +
+    '<h4 class="mb-2">' +
     pagesRead +
     "/" +
     pages +
     " pages</h4>" +
     '<div id="progress-bar" class="progress rounded-0">' +
     "<div " +
-    'class="progress-bar bg-warning w-"' +
+    'class="progress-bar bg-warning"' +
     'style="width: ' +
     progress +
     '%"' +
@@ -135,6 +188,11 @@ function renderBook(book, i) {
     "></div>" +
     "</div>" +
     "</div>";
+
+  bookDom.insertAdjacentHTML("beforeend", bookHtml);
+
+  addRemoveHandler(i);
+  editBookHandler(i);
 }
 
 function renderBooks() {
@@ -142,7 +200,6 @@ function renderBooks() {
   document.getElementById("books").innerHTML = "";
   for (let i = 0; i < myLibrary.length; i++) {
     renderBook(myLibrary[i], i);
-    addRemoveHandler(i);
   }
 }
 
